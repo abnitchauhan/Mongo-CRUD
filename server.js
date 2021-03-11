@@ -2,10 +2,14 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient;
+const dotenv = require('dotenv')
 const app = express();
 
+// Make environment variables available throughout the Application
+dotenv.config();
+
 // Database Connection
-    const connectionString  = 'mongodb+srv://AbnitChauhan:ahngeaSp743qsyM2@abnit.x8lyh.mongodb.net/Abnit?retryWrites=true&w=majority';
+    const connectionString  = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@abnit.x8lyh.mongodb.net/Abnit?retryWrites=true&w=majority`;
 
 
 //MongoClient Connection
