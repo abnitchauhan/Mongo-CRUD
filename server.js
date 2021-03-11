@@ -1,4 +1,4 @@
-const bodyParser = require('body-parser');
+ 
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
@@ -8,29 +8,35 @@ const connectionString  = 'mongodb+srv://AbnitChauhan:ahngeaSp743qsyM2@abnit.x8l
 
 
 //MongoClient Connection
-MongoClient.connect(connectionString, {
-    useUnifiedTopology: true
-  }, (err, client) => {
-    if (err) return console.error(err)
-    console.log('Connected to Database')
-  })
+MongoClient.connect(connectionString, {useUnifiedTopology: true}).
+then(client => {
+    const db= client.db('Abnit');
+    const quotesCollection = db.collection('quotes'); 
 
-  
-// MiddleWare 
-app.use(bodyParser.urlencoded({extended:true}));
+// Set Embeded Javascript
+    app.set('view engine', 'ejs');
 
+  // MiddleWare ======================================== 
+app.use(express.urlencoded({extended:true}));  
+// ===================================================
 
-app.get ('/',  (req, res) =>{
-    res.sendFile(__dirname +'/index.html');
-});
-
-app.post('/quotes', (req,res) => { 
+    app.get ('/',  (req, res) =>{ 
+      const cursor = db.collection('quotes'). find().toArray()
+      .then(results =>{
+        res.render('index.ejs', {quotes : results});
+      });
      
-    console.log(req.body);  
-})
-
-
-
+    });
+  
+    app.post('/quotes', (req,res) => { 
+      quotesCollection.insertOne(req.body)
+        .then(result => { 
+          res.redirect('/')
+        })  
+        .catch(error =>console.error(error))
+     });  
+  });
+ 
 // __dirname is the current directory you are in 
 app.listen(3000, ()=>{console.log('Server Running on localhost:3000')});
 
