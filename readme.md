@@ -1,6 +1,6 @@
-Simple CRUD Application using NodeJS and MongoDB
+Simple **CRUD** Application using NodeJS and MongoDB
 
-to start : 
+To Start : 
     
     1. Clone the application using `git clone https://github.com/abnitchauhan/Mongo-CRUD.git` into your directory.
     2. Go into the directory using cd `foldername`.
